@@ -92,7 +92,7 @@ distance = |x1 - x2| + |y1 - y2|
 
 1. Clone project:
 ```bash
-$ git clone
+$ git clone https://github.com/thienkb1123/cinema-seating.git
 ```
 
 1. Install dependencies:
