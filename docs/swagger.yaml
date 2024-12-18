@@ -1,0 +1,138 @@
+definitions:
+  entity.Cinema:
+    properties:
+      columns:
+        type: integer
+      minDistance:
+        default: 0
+        type: integer
+      rows:
+        type: integer
+      seats:
+        items:
+          items:
+            $ref: '#/definitions/entity.Seat'
+          type: array
+        type: array
+    required:
+    - columns
+    - rows
+    type: object
+  entity.Seat:
+    properties:
+      column:
+        type: integer
+      row:
+        type: integer
+      status:
+        allOf:
+        - $ref: '#/definitions/entity.SeatStatus'
+        description: 'Status 0: Available, 1: Reserved'
+    type: object
+  entity.SeatAction:
+    properties:
+      col:
+        default: 0
+        description: Col is required but can be 0
+        type: integer
+      row:
+        default: 0
+        description: Row is required but can be 0
+        type: integer
+    type: object
+  entity.SeatStatus:
+    enum:
+    - 0
+    - 1
+    type: integer
+    x-enum-comments:
+      Available: "0"
+      Reserved: "1"
+    x-enum-varnames:
+    - Available
+    - Reserved
+info:
+  contact: {}
+paths:
+  /cinema/available-seats:
+    get:
+      consumes:
+      - application/json
+      description: Get available seats
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Seat'
+      summary: Get available seats
+      tags:
+      - Seating
+  /cinema/cancel:
+    post:
+      consumes:
+      - application/json
+      description: Cancel seat
+      parameters:
+      - description: SeatAction
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/entity.SeatAction'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.SeatAction'
+      summary: Cancel seat
+      tags:
+      - Seating
+  /cinema/configure:
+    post:
+      consumes:
+      - application/json
+      description: Configure cinema
+      parameters:
+      - description: Cinema
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/entity.Cinema'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/entity.Cinema'
+      summary: Configure cinema
+      tags:
+      - Seating
+  /cinema/reserve:
+    post:
+      consumes:
+      - application/json
+      description: Reserve seat
+      parameters:
+      - description: SeatAction
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/entity.SeatAction'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.SeatAction'
+      summary: Reserve seat
+      tags:
+      - Seating
+swagger: "2.0"
